@@ -1,0 +1,39 @@
+body{
+  background-color: #8c7ae6;
+  max-width: 100%;
+  width: 1500px;
+  height: 1050px;
+  font-family: "Quicksand", sans-serif;
+}
+div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+form{
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+form input{
+  width: 250px;
+  height: 26px;
+  border-radius: 2px;
+  border: none;
+  margin: 2px;
+  align-items: center;
+}
+
+h1{
+  color: white ;
+}
+
+#Button{
+  background-color: #6f58e0;
+  color: white;
+  font-size: 20px;
+}
