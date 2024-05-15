@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const RegisterPage = () => {
+
+  const history = useNavigate();
+
   const url = 'https://lsfelipels.pythonanywhere.com/api/signup';
   const [data, setData] = useState({
     username: '',
@@ -18,9 +21,13 @@ const RegisterPage = () => {
     })
     .then(res => {
       console.log(res.data);
+      alert('Registro realizado com sucesso!');
+      history('/');
     })
     .catch(error => {
       console.error('Erro ao enviar requisição POST:', error);
+      alert("A user with that username already exists."
+    );
     });
   }
 
