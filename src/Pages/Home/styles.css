@@ -82,11 +82,10 @@ button{
   align-items: center;
   align-content: center;
   justify-content: center;
-  flex-wrap: wrap;
-  flex-direction: row-reverse;
+  flex-direction: column;
   margin-top: 1px solid black;
 }
 
 .Opcao button {
-  width: 484px;
+  width: 968px;
 }
