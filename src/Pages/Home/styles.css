@@ -48,6 +48,10 @@ body{
   color: white;
 }
 
+.form-tweet button{
+  width: 968px;
+}
+
 button{
   background-color: #6f58e0;
   color: white;
@@ -69,4 +73,20 @@ button{
 
 .tweets-usuarios h5{
   margin: 2px;
+
+}
+
+.Opcao{
+  display: flex;
+  width: 968px;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  margin-top: 1px solid black;
+}
+
+.Opcao button {
+  width: 484px;
 }

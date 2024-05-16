@@ -6,6 +6,8 @@ const HomePage = () => {
   const { user } = useContext(AuthContext);
   const [tweets, setTweets] = useState([]);
   const [tweetInput, setTweetInput] = useState('');
+  const [editingTweetId, setEditingTweetId] = useState(null);
+  const [editingTweetContent, setEditingTweetContent] = useState('');
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -50,6 +52,63 @@ const HomePage = () => {
     }
   };
 
+  const handleEditButtonClick = (tweetId, tweetContent) => {
+    setEditingTweetId(tweetId);
+    setEditingTweetContent(tweetContent);
+  };
+
+  const handleEditInputChange = (event) => {
+    setEditingTweetContent(event.target.value);
+  };
+
+  const handleUpdateButtonClick = async (tweetId) => {
+    try {
+      const userId = user.id; // Assumindo que user.id contenha o ID do usuário
+      const response = await fetch(`https://lsfelipels.pythonanywhere.com/post/tweets/${tweetId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user: userId, tweet: editingTweetContent }),
+      });
+  
+      if (response.ok) {
+        console.log('Tweet atualizado com sucesso!');
+        // Atualiza a lista de tweets após a atualização bem-sucedida
+        const updatedTweet = await response.json(); // Obtém o tweet atualizado pela API
+        const updatedTweets = tweets.map(tweet =>
+          tweet.id === updatedTweet.id ? updatedTweet : tweet
+        );
+        setTweets(updatedTweets);
+        setEditingTweetId(null);
+        setEditingTweetContent('');
+      } else {
+        console.error('Erro ao atualizar o tweet:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar o tweet:', error);
+    }
+  };
+
+  const handleDeleteButtonClick = async (tweetId) => {
+    try {
+      const response = await fetch(`https://lsfelipels.pythonanywhere.com/post/tweets/${tweetId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        console.log('Tweet excluído com sucesso!');
+        // Remove o tweet da lista após a exclusão bem-sucedida
+        const updatedTweets = tweets.filter(tweet => tweet.id !== tweetId);
+        setTweets(updatedTweets);
+      } else {
+        console.error('Erro ao excluir o tweet:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao excluir o tweet:', error);
+    }
+  };
+
   return (
     <div className='container'>
       <div className='home'>
@@ -66,7 +125,23 @@ const HomePage = () => {
         <div>
           {tweets.map(tweet => (
             <div className='tweets-usuarios' key={tweet.id}>
-              <h5>{tweet.username}</h5><p>{tweet.tweet}</p>
+              <h5>{tweet.username}</h5>
+              {editingTweetId === tweet.id ? (
+                <div className='Opcao'>
+                  <input type="text" value={editingTweetContent} onChange={handleEditInputChange} />
+                  <button onClick={() => handleUpdateButtonClick(tweet.id)}>Salvar</button>
+                </div>
+              ) : (
+                <div>
+                  <p>{tweet.tweet}</p>
+                  {user.username === tweet.username && (
+                    <div className='Opcao'>
+                      <button onClick={() => handleEditButtonClick(tweet.id, tweet.tweet)}>Editar</button>
+                      <button onClick={() => handleDeleteButtonClick(tweet.id)}>Excluir</button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

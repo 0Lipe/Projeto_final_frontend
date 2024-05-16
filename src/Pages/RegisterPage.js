@@ -26,10 +26,16 @@ const RegisterPage = () => {
     })
     .catch(error => {
       console.error('Erro ao enviar requisição POST:', error);
-      alert("A user with that username already exists."
-    );
+      if (error.response && error.response.data && error.response.data.username && error.response.data.username.length > 0) {
+        // Se a resposta contiver uma mensagem de erro de nome de usuário, exiba-a
+        alert(error.response.data.username[0]);
+      } else {
+        // Lidar com outros erros
+        alert("Ocorreu um erro ao registrar. Por favor, tente novamente mais tarde.");
+      }
     });
   }
+  
 
   function handle(e) {
     const newdata = { ...data };
